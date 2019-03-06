@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom'
 import Dragula from 'dragula';
 import 'dragula/dist/dragula.css';
 import Swimlane from './Swimlane';
@@ -21,6 +22,24 @@ export default class Board extends React.Component {
       complete: React.createRef(),
     }
   }
+
+  componentDidMount() {
+    let node = ReactDOM.findDOMNode(this);
+    let draggable = node.querySelectorAll(".Swimlane-dragColumn");
+    Dragula([draggable[0], draggable[1], draggable[2]], {
+      accepts: function(e1, target, handle, sibling) {
+        if (target === draggable[0]) {
+          e1.className = "Card Card-grey";
+        } else if (target === draggable[1]) {
+          e1.className = "Card Card-blue";
+        } else if (target === draggable[2]) {
+          e1.className = "Card Card-green";
+        }
+        return true;
+      }
+    });
+  }
+
   getClients() {
     return [
       ['1','Stark, White and Abbott','Cloned Optimal Architecture', 'in-progress'],
